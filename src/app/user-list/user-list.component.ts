@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from '../user';
-import {USER_LIST_DATA} from '../mock-users';
+import {UserService} from '../user.service';
+
 
 @Component({
   selector: 'app-user-list',
@@ -9,15 +10,22 @@ import {USER_LIST_DATA} from '../mock-users';
 })
 export class UserListComponent implements OnInit {
 
-  userList = USER_LIST_DATA;
+  userList: User[];
   selectedUser: User;
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
+
+    this.getUsers();
   }
 
   onSelect(user: User): void {
     this.selectedUser = user;
   }
 
+  // adding asynchronous service call with Observable
+
+  getUsers(): void {
+    this.userService.getUsers().subscribe(userArr => this.userList = userArr);
+  }
 }
